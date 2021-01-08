@@ -1,0 +1,28 @@
+use crate::{account_file_name, Language};
+
+pub const ENGLISH: Language = Language {
+    introduction: "Welcome to the bank! Please use the W and D keys to choose an option.",
+    sign_in: "Sign in",
+    sign_up: "Sign up",
+    exit: "Exit",
+    password_mismatch: "Passwords do not match.",
+    name_mismatch: "名前は合っていません。",
+    registration_finish: "Thank you for signing up.",
+    file_error: concat!(account_file_name!(), "could not be created."),
+    invalid_id: "Invalid ID. Please sign up to create an ID.",
+    id_is: " Your ID is: ",
+    name: "Name",
+    password: "Password",
+    password_confirmation: "Confirmation password",
+    balance: "Balance",
+    length_minimum: " must be at least one character long!",
+    deposit: "Deposit",
+    withdraw: "Withdraw",
+    delete_account: "Delete account",
+    done: "Go back",
+    amount: "Amount",
+    invalid_amount: "Invalid amount",
+    signed_in: "Successfully signed in.",
+    corrupted_account_file: "Account file has been corrupted. Please delete it.",
+    write_failed: "Saving failed.",
+};
