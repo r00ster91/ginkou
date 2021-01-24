@@ -6,7 +6,7 @@ pub const ENGLISH: Language = Language {
     sign_up: "Sign up",
     exit: "Exit",
     password_mismatch: "Passwords do not match.",
-    name_mismatch: "名前は合っていません。",
+    name_mismatch: "Names do not match.",
     registration_finish: "Thank you for signing up.",
     file_error: concat!(account_file_name!(), "could not be created."),
     invalid_id: "Invalid ID. Please sign up to create an ID.",
@@ -25,4 +25,5 @@ pub const ENGLISH: Language = Language {
     signed_in: "Successfully signed in.",
     corrupted_account_file: "Account file has been corrupted. Please delete it.",
     write_failed: "Saving failed.",
+    deletion_finish: "Account deleted.",
 };

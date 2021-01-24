@@ -34,6 +34,7 @@ pub struct Language {
     signed_in: &'static str,
     corrupted_account_file: &'static str,
     write_failed: &'static str,
+    deletion_finish: &'static str,
 }
 
 fn main() {

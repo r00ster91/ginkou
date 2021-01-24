@@ -27,4 +27,5 @@ pub const JAPANESE: Language = Language {
     signed_in: "サインインしました。",
     corrupted_account_file: "アカウントのファイルが文字化けになりました。削除してください。",
     write_failed: "保存できませんでした。",
+    deletion_finish: "アカウントが削除されました。",
 };

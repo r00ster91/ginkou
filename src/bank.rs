@@ -17,6 +17,53 @@ pub struct Account {
     balance: String,
 }
 
+impl Account {
+    // Returns true or false depending on whether the account should be deleted or not.
+    fn manage(&mut self, l: &Language, stdin: &io::Stdin, stdout: &mut io::Stdout) -> bool {
+        loop {
+            println!("{}: {}\n{}: {}", l.name, self.name, l.balance, self.balance);
+            let mut menu = menu::Menu::new(vec![l.deposit, l.withdraw, l.delete_account, l.done]);
+            let option = menu.read();
+            if option == l.deposit {
+                let mut input = String::new();
+                read(&l, l.amount, &mut input, stdin, stdout);
+                if let Ok(amount) = input.parse::<usize>() {
+                    let balance_as_i32 = self.balance.parse::<i32>().unwrap_or_else(|_| {
+                        eprintln!("{}", l.corrupted_account_file);
+                        process::exit(1);
+                    });
+                    self.balance = (balance_as_i32 + amount as i32).to_string();
+                } else {
+                    println!("{}", l.invalid_amount);
+                }
+            } else if option == l.withdraw {
+                let mut input = String::new();
+                read(&l, l.amount, &mut input, stdin, stdout);
+                if let Ok(amount) = input.parse::<usize>() {
+                    let balance_as_i32 = self.balance.parse::<i32>().unwrap_or_else(|_| {
+                        eprintln!("{}", l.corrupted_account_file);
+                        process::exit(1);
+                    });
+                    self.balance = (balance_as_i32 - amount as i32).to_string();
+                } else {
+                    println!("{}", l.invalid_amount);
+                }
+            } else if option == l.delete_account {
+                let mut name = String::new();
+                read(&l, l.name, &mut name, stdin, stdout);
+                if name == self.name {
+                    println!("{}", l.deletion_finish);
+                    break true;
+                } else {
+                    println!("{}", l.name_mismatch);
+                }
+            } else if option == l.done {
+                break false;
+            }
+        }
+    }
+}
+
 #[macro_export]
 macro_rules! account_file_name {
     () => {
@@ -88,50 +135,19 @@ pub fn sign_in(l: &Language, accounts: &mut HashMap<String, Account>) {
 
     let mut id = String::new();
     read(&l, "ID", &mut id, &stdin, &mut stdout);
+
+    terminal::echo(&stdin, false);
     let mut password = String::new();
     read(&l, l.password, &mut password, &stdin, &mut stdout);
+    println!();
+    terminal::echo(&stdin, true);
 
-    if let Some(mut account) = accounts.get_mut(&id) {
+    if let Some(account) = accounts.get_mut(&id) {
         if account.password == password {
             println!("{}\n", l.signed_in);
-            loop {
-                println!(
-                    "{}: {}\n{}: {}",
-                    l.name, &account.name, l.balance, &account.balance
-                );
-                let mut menu =
-                    menu::Menu::new(vec![l.deposit, l.withdraw, l.delete_account, l.done]);
-                let option = menu.read();
-                if option == l.deposit {
-                    let mut input = String::new();
-                    read(&l, l.amount, &mut input, &stdin, &mut stdout);
-                    if let Ok(amount) = input.parse::<usize>() {
-                        account.balance =
-                            (account.balance.parse::<i32>().unwrap() + amount as i32).to_string();
-                    } else {
-                        println!("{}", l.invalid_amount);
-                    }
-                } else if option == l.withdraw {
-                    let mut input = String::new();
-                    read(&l, l.amount, &mut input, &stdin, &mut stdout);
-                    if let Ok(amount) = input.parse::<usize>() {
-                        account.balance =
-                            (account.balance.parse::<i32>().unwrap() - amount as i32).to_string();
-                    } else {
-                        println!("{}", l.invalid_amount);
-                    }
-                } else if option == l.delete_account {
-                    let mut name = String::new();
-                    read(&l, l.name, &mut name, &stdin, &mut stdout);
-                    if name == account.name {
-                        accounts.remove(&id);
-                        break;
-                    } else {
-                        println!("{}", l.name_mismatch);
-                    }
-                } else if option == l.done {
-                    break;
-                }
+            let delete = account.manage(&l, &stdin, &mut stdout);
+            if delete {
+                accounts.remove(&id);
             }
             write_accounts(&l, &accounts);
         } else {
