@@ -1,9 +1,9 @@
-// TODO: いつかhttps://github.com/rust-lang/rust/issues/55467が実現したらJapaneseを「日本語」にしよう！
+// TODO: https://github.com/rust-lang/rust/issues/55467が実現したらJapaneseを「日本語」にしよう！
 
 use crate::{account_file_name, Language};
 
 pub const JAPANESE: Language = Language {
-    introduction: "いらっしゃいませ！WとDキーで選択を選んでください。",
+    introduction: "いらっしゃいませ！WとDキーで選択してください。",
     sign_in: "サインイン",
     sign_up: "サインアップ",
     exit: "出口",
@@ -17,7 +17,7 @@ pub const JAPANESE: Language = Language {
     password: "パスワード",
     password_confirmation: "確認のパスワード",
     balance: "残高",
-    length_minimum: "の長さの最低は一文字です。",
+    length_minimum: "の最小長は一文字です。",
     deposit: "貯金",
     withdraw: "引き出す",
     delete_account: "アカウントを削除",
