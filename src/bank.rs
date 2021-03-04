@@ -60,6 +60,7 @@ impl Account {
             } else if option == l.done {
                 break false;
             }
+            println!();
         }
     }
 }

@@ -70,5 +70,6 @@ fn main() {
         } else {
             break;
         }
+        println!();
     }
 }
